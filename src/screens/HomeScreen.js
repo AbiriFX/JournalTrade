@@ -6,7 +6,7 @@ export default function HomeScreen({ navigation }) {
       {/* بخش هدر با لوگو و تیتر */}
       <View style={styles.header}>
         <Image 
-          source={{ uri: 'https://cdn-icons-png.flaticon.com/512/2933/2933944.png' }} 
+          source={require('../../assets/icon.png')} 
           style={styles.logo} 
         />
         <Text style={styles.title}>Journal Trade</Text>

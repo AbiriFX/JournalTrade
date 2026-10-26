@@ -1,32 +1,42 @@
+import { useIsFocused } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
 import { getTrades, sendToTelegram } from '../helpers';
 import { getStats } from '../utils';
 
-export default function ReportsScreen({ navigation }) {
+export default function ReportsScreen() {
   const [trades, setTrades] = useState([]);
-  const [filter, setFilter] = useState('Monthly'); // Weekly, Monthly, Yearly
+  const [filter, setFilter] = useState('Monthly'); 
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
+    if (isFocused) {
       loadTrades();
-    });
-    return unsubscribe;
-  }, [navigation]);
+    }
+  }, [isFocused]);
 
   const loadTrades = async () => setTrades(await getTrades());
 
   const filteredTrades = trades.filter(t => {
+    if (!t.dateTime) return false;
+    
     const tradeDate = new Date(t.dateTime);
     const now = new Date();
+    
+    if (isNaN(tradeDate.getTime())) return true; 
+
     if (filter === 'Weekly') {
       const diffTime = Math.abs(now - tradeDate);
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       return diffDays <= 7;
     }
-    if (filter === 'Monthly') return tradeDate.getMonth() === now.getMonth() && tradeDate.getFullYear() === now.getFullYear();
-    if (filter === 'Yearly') return tradeDate.getFullYear() === now.getFullYear();
+    if (filter === 'Monthly') {
+      return tradeDate.getMonth() === now.getMonth() && tradeDate.getFullYear() === now.getFullYear();
+    }
+    if (filter === 'Yearly') {
+      return tradeDate.getFullYear() === now.getFullYear();
+    }
     return true;
   });
 
@@ -35,10 +45,11 @@ export default function ReportsScreen({ navigation }) {
   const chartData = [
     { name: 'Win', population: stats.wins, color: '#4CAF50', legendFontColor: '#FFF', legendFontSize: 14 },
     { name: 'Loss', population: stats.losses, color: '#F44336', legendFontColor: '#FFF', legendFontSize: 14 },
+    { name: 'BE', population: stats.breakEven, color: '#9E9E9E', legendFontColor: '#FFF', legendFontSize: 14 },
   ].filter(item => item.population > 0);
 
   const handleSendReport = async () => {
-    const message = `📊 <b>${filter} Performance Report</b> 📊\n\n📈 Total Trades: ${stats.total}\n✅ Wins: ${stats.wins}\n❌ Losses: ${stats.losses}\n🎯 Win Rate: <b>${stats.winRate}%</b>`;
+    const message = `📊 <b>${filter} Performance Report</b> 📊\n\n📈 Total Trades: ${stats.total}\n✅ Wins: ${stats.wins}\n❌ Losses: ${stats.losses}\n⚖️ Break Even: ${stats.breakEven}\n🎯 Win Rate: <b>${stats.winRate}%</b>`;
     await sendToTelegram(message);
   };
 
@@ -55,11 +66,29 @@ export default function ReportsScreen({ navigation }) {
         ))}
       </View>
 
+      {/* آمار کلی */}
       <View style={styles.statsRow}>
         <View style={styles.statBox}><Text style={styles.statNum}>{stats.total}</Text><Text style={styles.statLabel}>Total</Text></View>
         <View style={styles.statBox}><Text style={styles.statNum}>{stats.winRate}%</Text><Text style={styles.statLabel}>Win Rate</Text></View>
       </View>
 
+      {/* آمار تفکیکی */}
+      <View style={styles.statsRow}>
+        <View style={[styles.statBox, { borderColor: '#4CAF50' }]}>
+          <Text style={[styles.statNum, { color: '#4CAF50' }]}>{stats.wins}</Text>
+          <Text style={styles.statLabel}>Wins</Text>
+        </View>
+        <View style={[styles.statBox, { borderColor: '#F44336' }]}>
+          <Text style={[styles.statNum, { color: '#F44336' }]}>{stats.losses}</Text>
+          <Text style={styles.statLabel}>Losses</Text>
+        </View>
+        <View style={[styles.statBox, { borderColor: '#9E9E9E' }]}>
+          <Text style={[styles.statNum, { color: '#9E9E9E' }]}>{stats.breakEven}</Text>
+          <Text style={styles.statLabel}>Break Even</Text>
+        </View>
+      </View>
+
+      {/* نمودار */}
       {chartData.length > 0 && (
         <View style={styles.chartContainer}>
           <PieChart
@@ -90,7 +119,7 @@ const styles = StyleSheet.create({
   filterBtnActive: { backgroundColor: '#D4AF37', borderColor: '#D4AF37' },
   filterText: { color: '#FFF', fontWeight: 'bold' },
   filterTextActive: { color: '#000' },
-  statsRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20 },
+  statsRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 15 },
   statBox: { backgroundColor: '#1E1E1E', padding: 15, borderRadius: 10, flex: 1, marginHorizontal: 5, alignItems: 'center', borderWidth: 1, borderColor: '#333' },
   statNum: { color: '#D4AF37', fontSize: 24, fontWeight: 'bold' },
   statLabel: { color: '#FFF', fontSize: 14 },
