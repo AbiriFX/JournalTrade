@@ -4,7 +4,7 @@
     "slug": "journal-trade",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png", 
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "assetBundlePatterns": [
       "**/*"
@@ -31,6 +31,12 @@
           "backgroundColor": "#121212"
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "eebebb15-2d17-49db-bc51-ede6d2f81f96"
+      }
+    },
+    "owner": "abirifx"
   }
 }
