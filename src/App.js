@@ -1,10 +1,12 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+// ایمپورت تمام صفحات با مسیر دقیق
 import HistoryScreen from './screens/HistoryScreen';
 import HomeScreen from './screens/HomeScreen';
 import NewSignalScreen from './screens/NewSignalScreen';
 import ReportsScreen from './screens/ReportsScreen';
+import SettingsScreen from './screens/SettingsScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +24,7 @@ export default function App() {
         <Stack.Screen name="NewSignal" component={NewSignalScreen} options={{ title: 'New Signal' }} />
         <Stack.Screen name="History" component={HistoryScreen} options={{ title: 'Trade History' }} />
         <Stack.Screen name="Reports" component={ReportsScreen} options={{ title: 'Reports' }} />
+        <Stack.Screen name="Settings" component={SettingsScreen} options={{ title: 'Settings' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

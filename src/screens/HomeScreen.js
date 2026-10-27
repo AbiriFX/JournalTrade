@@ -3,7 +3,6 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      {/* بخش هدر با لوگو و تیتر */}
       <View style={styles.header}>
         <Image 
           source={require('../../assets/icon.png')} 
@@ -13,7 +12,6 @@ export default function HomeScreen({ navigation }) {
         <Text style={styles.subtitle}>Professional Trading Journal</Text>
       </View>
 
-      {/* دکمه‌های منو */}
       <View style={styles.menu}>
         <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('NewSignal')}>
           <Text style={styles.cardIcon}>📈</Text>
@@ -29,6 +27,12 @@ export default function HomeScreen({ navigation }) {
           <Text style={styles.cardIcon}>📊</Text>
           <Text style={styles.cardText}>Reports & Analytics</Text>
         </TouchableOpacity>
+
+        {/* دکمه جدید تنظیمات */}
+        <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('Settings')}>
+          <Text style={styles.cardIcon}>⚙️</Text>
+          <Text style={styles.cardText}>Settings</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -36,26 +40,22 @@ export default function HomeScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#121212', padding: 20 },
-  header: { alignItems: 'center', marginTop: 60, marginBottom: 40 },
-  logo: { width: 100, height: 100, marginBottom: 15, tintColor: '#D4AF37' }, // رنگ طلایی به لوگو می‌دهد
-  title: { fontSize: 36, fontWeight: 'bold', color: '#D4AF37', letterSpacing: 1 },
-  subtitle: { fontSize: 16, color: '#888', marginTop: 5 },
+  header: { alignItems: 'center', marginTop: 30, marginBottom: 20 },
+  logo: { width: 120, height: 120, marginBottom: 10, resizeMode: 'contain' },
+  title: { fontSize: 32, fontWeight: 'bold', color: '#D4AF37', letterSpacing: 1 },
+  subtitle: { fontSize: 14, color: '#888', marginTop: 5 },
   menu: { flex: 1, justifyContent: 'center' },
   card: { 
     backgroundColor: '#1E1E1E', 
-    padding: 25, 
+    padding: 20, 
     borderRadius: 15, 
-    marginBottom: 20, 
+    marginBottom: 15, 
     borderWidth: 1, 
     borderColor: '#333',
     flexDirection: 'row',
     alignItems: 'center',
     elevation: 5,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
   },
-  cardIcon: { fontSize: 30, marginRight: 20 },
-  cardText: { fontSize: 20, color: '#FFF', fontWeight: 'bold' },
+  cardIcon: { fontSize: 26, marginRight: 20 },
+  cardText: { fontSize: 18, color: '#FFF', fontWeight: 'bold' },
 });

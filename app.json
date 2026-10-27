@@ -1,51 +1,36 @@
 {
   "expo": {
-    "name": "JournalTrade",
-    "slug": "JournalTrade",
+    "name": "Journal Trade",
+    "slug": "journal-trade",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "scheme": "journaltrade",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "dark",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "icon": "./assets/expo.icon"
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#121212",
-        "foregroundImage": "./assets/icon.png"
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#121212"
       },
-      "predictiveBackGestureEnabled": false,
-      "package": "com.abirifx.JournalTrade"
+      "package": "com.abirifx.journaltrade"
     },
     "web": {
-      "output": "server",
       "favicon": "./assets/icon.png"
     },
     "plugins": [
-      "expo-router",
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "image": "./assets/icon.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#121212"
         }
       ]
-    ],
-    "experiments": {
-      "typedRoutes": true,
-      "reactCompiler": true
-    },
-    "extra": {
-      "router": {
-        "asyncRoutes": {
-          "web": true
-        }
-      },
-      "eas": {
-        "projectId": "a32d7f94-8b20-481d-ac5e-7b5485680e65"
-      }
-    }
+    ]
   }
 }
